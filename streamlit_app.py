@@ -2,6 +2,7 @@ import streamlit
 import pandas as pd
 
 streamlit.title('My Parents New Healthy Diner')
+streamlit.text('Playing with VS code')
 
 streamlit.header('Breakfast Favorites')
 streamlit.text('🥣Omega 3 & Blueberry Oatmeal')
