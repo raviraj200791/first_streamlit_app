@@ -41,6 +41,8 @@ fruityvice_normalized = pd.json_normalize(fruityvice_response.json())
 streamlit.dataframe(fruityvice_normalized)
 
 
+# don't run anything past stop() while we trouble shoot the Control flow issue
+streamlit.stop()
 # Let's Query Our Trial Account Metadata 
 my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
 my_cur = my_cnx.cursor()
