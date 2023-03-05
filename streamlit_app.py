@@ -49,20 +49,34 @@ try:
 
 except URLError as e:
     streamlit.errot()
+# ----------------------------------------------------------------------------------------------- 
+# # don't run anything past stop() while we trouble shoot the Control flow issue
+# streamlit.stop()
+# # Let's Query Our Trial Account Metadata 
+# my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
+# my_cur = my_cnx.cursor()
+# # my_cur.execute("SELECT CURRENT_USER(), CURRENT_ACCOUNT(), CURRENT_REGION()")
+# my_cur.execute("SELECT * FROM PC_RIVERY_DB.PUBLIC.FRUIT_LOAD_LIST")
+# my_data_rows = my_cur.fetchall()
+# streamlit.header("The fruit load list contains:")
+# streamlit.dataframe(my_data_rows)
 
-# don't run anything past stop() while we trouble shoot the Control flow issue
-streamlit.stop()
-# Let's Query Our Trial Account Metadata 
-my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
-my_cur = my_cnx.cursor()
-# my_cur.execute("SELECT CURRENT_USER(), CURRENT_ACCOUNT(), CURRENT_REGION()")
-my_cur.execute("SELECT * FROM PC_RIVERY_DB.PUBLIC.FRUIT_LOAD_LIST")
-my_data_rows = my_cur.fetchall()
+# add_my_fruit = streamlit.text_input("What fruit would you like to add?", 'jackfruit')
+# streamlit.write("Thanks for adding ", add_my_fruit)
+
+# # This might not work correctly
+# my_cur.execute("insert into PC_RIVERY_DB.PUBLIC.FRUIT_LOAD_LIST values ('from streamlit)")
+# -----------------------------------------------------------------------------------------------
+
 streamlit.header("The fruit load list contains:")
-streamlit.dataframe(my_data_rows)
+# Snowflake-related functions
+def get_fruit_load_list():
+    with my_cnx_cursor() as my_cur:
+        my_cur.execute("select * from fruit_load_list")
+        return my_cur.fetchall()
 
-add_my_fruit = streamlit.text_input("What fruit would you like to add?", 'jackfruit')
-streamlit.write("Thanks for adding ", add_my_fruit)
-
-# This might not work correctly
-my_cur.execute("insert into PC_RIVERY_DB.PUBLIC.FRUIT_LOAD_LIST values ('from streamlit)")
+# Add a button to load the fruit
+if streamlit.button("Get Fruit Loan List"):
+    my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
+    my_data_rows = get_fruit_load_list()
+    streamlit.dataframe(my_data_rows)
